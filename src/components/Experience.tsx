@@ -119,11 +119,30 @@ const timelineEvents: TimelineEvent[] = [
   },
 ];
 
+// Custom hook to detect mobile
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 768); // md breakpoint
+    };
+
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
+
+  return isMobile;
+}
+
+// Main Experience Component
 export default function Experience() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isInitialized, setIsInitialized] = useState(false);
   const [showPlane, setShowPlane] = useState(false);
   const componentRef = useRef<HTMLDivElement>(null);
+  const isMobile = useIsMobile();
 
   // Initialize scroll progress immediately on mount
   useEffect(() => {
@@ -145,14 +164,16 @@ export default function Experience() {
     return () => clearTimeout(timer);
   }, []);
 
-  // Show plane with 1 second delay after component mounts
+  // Show plane with 1 second delay after component mounts (only for desktop)
   useEffect(() => {
-    const planeTimer = setTimeout(() => {
-      setShowPlane(true);
-    }, 1000);
+    if (!isMobile) {
+      const planeTimer = setTimeout(() => {
+        setShowPlane(true);
+      }, 1000);
 
-    return () => clearTimeout(planeTimer);
-  }, []);
+      return () => clearTimeout(planeTimer);
+    }
+  }, [isMobile]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -167,50 +188,88 @@ export default function Experience() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Don't render the plane until we have the initial scroll position AND 1 second has passed
-  const planeOpacity = isInitialized && showPlane ? 1 : 0;
+  // Don't render the plane until we have the initial scroll position AND 1 second has passed (desktop only)
+  const planeOpacity = isInitialized && showPlane && !isMobile ? 1 : 0;
 
   return (
-    <div ref={componentRef} className="min-h-[800vh] relative overflow-hidden">
+    <div ref={componentRef} className={`relative overflow-hidden ${isMobile ? 'min-h-screen' : 'min-h-[800vh]'}`}>
       {/* Hero Section */}
-      <section className="h-screen flex items-center justify-center relative">
+      <section className="min-h-screen flex items-center justify-center relative px-4 py-8">
         {/* Background Effects */}
         <div className="absolute inset-0">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl" />
+          <div className={`absolute top-1/4 left-1/4 ${isMobile ? 'w-64 h-64' : 'w-96 h-96'} bg-blue-500/10 rounded-full blur-3xl`} />
+          <div className={`absolute bottom-1/4 right-1/4 ${isMobile ? 'w-64 h-64' : 'w-96 h-96'} bg-purple-500/10 rounded-full blur-3xl`} />
         </div>
 
-        <div className="container-custom text-center relative z-10">
+        <div className={`text-center relative z-10 ${isMobile ? 'max-w-lg mx-auto' : 'container-custom'}`}>
+          {/* Mobile Logo/Icon */}
+          {isMobile && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8 }}
+              className="mb-8"
+            >
+              <div className="w-16 h-16 mx-auto bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                <svg
+                  viewBox="0 0 24 24"
+                  className="w-8 h-8 text-white"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M12 2L2 7l10 5 10-5-10-5z" />
+                  <path d="M2 17l10 5 10-5" />
+                  <path d="M2 12l10 5 10-5" />
+                </svg>
+              </div>
+            </motion.div>
+          )}
+
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-8 leading-tight"
+            transition={{ duration: 0.8, delay: isMobile ? 0.2 : 0 }}
+            className={`font-bold mb-6 leading-tight ${
+              isMobile 
+                ? 'text-3xl sm:text-4xl' 
+                : 'text-2xl md:text-4xl lg:text-5xl xl:text-6xl mb-8'
+            }`}
           >
-            <span className="gradient-text">Industry Expereince</span>
+            <span className={isMobile ? 'bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent' : 'gradient-text'}>
+              Industry Experience
+            </span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-gray-300 mb-12 max-w-5xl mx-auto leading-relaxed"
+            transition={{ duration: 0.8, delay: isMobile ? 0.4 : 0.2 }}
+            className={`text-gray-300 leading-relaxed ${
+              isMobile 
+                ? 'text-base sm:text-lg mb-8' 
+                : 'text-lg md:text-xl lg:text-2xl xl:text-3xl mb-12 max-w-5xl mx-auto'
+            }`}
           >
             Engineered production software that powers critical operations for
-            major institutions serving millions of users and businesses. The
-            timeline below reveals the scale of systems I've contributed to at
-            each step.
+            major institutions serving millions of users and businesses.
+            {!isMobile && ' The timeline below reveals the scale of systems I\'ve contributed to at each step.'}
           </motion.p>
 
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-lg md:text-xl lg:text-2xl xl:text-3xl text-gray-400"
+            transition={{ duration: 0.8, delay: isMobile ? 0.6 : 0.4 }}
+            className={`text-gray-400 ${
+              isMobile 
+                ? 'text-sm mb-6' 
+                : 'text-lg md:text-xl lg:text-2xl xl:text-3xl'
+            }`}
           >
-            Scroll to begin the journey
+            {isMobile ? 'Scroll to explore my journey' : 'Scroll to begin the journey'}
           </motion.div>
 
+          {/* Scroll Indicator */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{
@@ -218,217 +277,303 @@ export default function Experience() {
               y: [0, 8, 0],
             }}
             transition={{
-              opacity: { duration: 0.8, delay: 0.6 },
+              opacity: { duration: 0.8, delay: isMobile ? 0.8 : 0.6 },
               y: {
                 duration: 1.5,
                 repeat: Infinity,
                 ease: "easeInOut",
               },
             }}
-            className="mt-8 flex justify-center"
+            className={`flex justify-center ${isMobile ? '' : 'mt-8'}`}
           >
-            <div className="flex flex-col items-center space-y-1">
+            {isMobile ? (
               <svg
-                className="w-6 h-3 text-gray-800"
+                className="w-6 h-6 text-gray-400"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2.5"
-                viewBox="0 0 24 12"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
               >
                 <path
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  d="M3 3l9 6 9-6"
+                  d="M19 14l-7 7m0 0l-7-7m7 7V3"
                 />
               </svg>
-              <svg
-                className="w-6 h-3 text-gray-700"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                viewBox="0 0 24 12"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 3l9 6 9-6"
-                />
-              </svg>
-              <svg
-                className="w-6 h-3 text-gray-600"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                viewBox="0 0 24 12"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 3l9 6 9-6"
-                />
-              </svg>
-              <svg
-                className="w-6 h-3 text-gray-500"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                viewBox="0 0 24 12"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M3 3l9 6 9-6"
-                />
-              </svg>
-            </div>
+            ) : (
+              <div className="flex flex-col items-center space-y-1">
+                <svg
+                  className="w-6 h-3 text-gray-800"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  viewBox="0 0 24 12"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 3l9 6 9-6"
+                  />
+                </svg>
+                <svg
+                  className="w-6 h-3 text-gray-700"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  viewBox="0 0 24 12"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 3l9 6 9-6"
+                  />
+                </svg>
+                <svg
+                  className="w-6 h-3 text-gray-600"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  viewBox="0 0 24 12"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 3l9 6 9-6"
+                  />
+                </svg>
+                <svg
+                  className="w-6 h-3 text-gray-500"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  viewBox="0 0 24 12"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M3 3l9 6 9-6"
+                  />
+                </svg>
+              </div>
+            )}
           </motion.div>
         </div>
       </section>
 
-      {/* Animated Plane */}
-      <motion.div
-        className="fixed z-0 pointer-events-none"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: planeOpacity }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        style={{
-          left: `${50 + Math.sin(scrollProgress * Math.PI * 2) * 40}%`,
-          top: `${15 + scrollProgress * 80}%`,
-          transform: `translate(-50%, -50%) rotate(${
-            Math.sin(scrollProgress * Math.PI * 4) * 25 + 90
-          }deg)`,
-        }}
-      >
-        {/* Vapor Trail */}
-        <div
-          className="absolute right-12 top-1/2 w-32 h-1 bg-gradient-to-r from-blue-400/60 to-transparent rounded-full transform -translate-y-1/2"
-          style={{ opacity: scrollProgress > 0.1 ? 0.8 : 0.3 }}
-        />
+      {/* Animated Plane - Desktop Only */}
+      {!isMobile && (
+        <motion.div
+          className="fixed z-0 pointer-events-none"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: planeOpacity }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          style={{
+            left: `${50 + Math.sin(scrollProgress * Math.PI * 2) * 40}%`,
+            top: `${15 + scrollProgress * 80}%`,
+            transform: `translate(-50%, -50%) rotate(${
+              Math.sin(scrollProgress * Math.PI * 4) * 25 + 90
+            }deg)`,
+          }}
+        >
+          {/* Vapor Trail */}
+          <div
+            className="absolute right-12 top-1/2 w-32 h-1 bg-gradient-to-r from-blue-400/60 to-transparent rounded-full transform -translate-y-1/2"
+            style={{ opacity: scrollProgress > 0.1 ? 0.8 : 0.3 }}
+          />
 
-        {/* Plane */}
-        <div className="w-52 h-52 transition-transform hover:scale-125">
-          <svg
-            viewBox="0 0 100 100"
-            className="w-full h-full filter drop-shadow-lg"
-          >
-            <defs>
-              <linearGradient
-                id="planeGradient"
-                x1="0%"
-                y1="0%"
-                x2="100%"
-                y2="100%"
-              >
-                <stop offset="0%" style={{ stopColor: "#60a5fa" }} />
-                <stop offset="100%" style={{ stopColor: "#a78bfa" }} />
-              </linearGradient>
-            </defs>
-            <path
-              d="M20 50 L80 45 L85 50 L80 55 Z"
-              fill="url(#planeGradient)"
-            />
-            <path
-              d="M30 35 L50 45 L45 50 L35 45 Z"
-              fill="url(#planeGradient)"
-            />
-            <path
-              d="M30 65 L50 55 L45 50 L35 55 Z"
-              fill="url(#planeGradient)"
-            />
-            <path d="M15 45 L25 50 L15 55 Z" fill="url(#planeGradient)" />
-          </svg>
-        </div>
-      </motion.div>
+          {/* Plane */}
+          <div className="w-52 h-52 transition-transform hover:scale-125">
+            <svg
+              viewBox="0 0 100 100"
+              className="w-full h-full filter drop-shadow-lg"
+            >
+              <defs>
+                <linearGradient
+                  id="planeGradient"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="100%"
+                >
+                  <stop offset="0%" style={{ stopColor: "#60a5fa" }} />
+                  <stop offset="100%" style={{ stopColor: "#a78bfa" }} />
+                </linearGradient>
+              </defs>
+              <path
+                d="M20 50 L80 45 L85 50 L80 55 Z"
+                fill="url(#planeGradient)"
+              />
+              <path
+                d="M30 35 L50 45 L45 50 L35 45 Z"
+                fill="url(#planeGradient)"
+              />
+              <path
+                d="M30 65 L50 55 L45 50 L35 55 Z"
+                fill="url(#planeGradient)"
+              />
+              <path d="M15 45 L25 50 L15 55 Z" fill="url(#planeGradient)" />
+            </svg>
+          </div>
+        </motion.div>
+      )}
 
       {/* Timeline Container */}
-      <div className="relative py-20 px-8 md:px-16 lg:px-24 z-10">
-        {/* Vertical Timeline Line */}
-        <div
-          className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-blue-500 via-purple-600 to-blue-500 opacity-30"
-          style={{ height: `calc(100% - 100px)`, top: "100px" }}
-        />
+      <div className={`relative z-10 ${isMobile ? 'px-4 pb-8' : 'py-20 px-8 md:px-16 lg:px-24'}`}>
+        {/* Timeline Line */}
+        {isMobile ? (
+          <div className="absolute left-8 top-0 bottom-0 w-0.5 bg-gradient-to-b from-blue-500 via-purple-600 to-blue-500 opacity-30" />
+        ) : (
+          <div
+            className="absolute left-1/2 transform -translate-x-1/2 w-1 bg-gradient-to-b from-blue-500 via-purple-600 to-blue-500 opacity-30"
+            style={{ height: `calc(100% - 100px)`, top: "100px" }}
+          />
+        )}
 
         {/* Timeline Events */}
-        {timelineEvents.map((event, index) => (
-          <div key={event.id} className="relative mb-32">
-            {/* Timeline Dot */}
-            <div
-              className="absolute left-1/2 transform -translate-x-1/2 w-6 h-6 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full shadow-lg z-40 border-4 border-gray-900"
-              style={{ boxShadow: "0 0 20px rgba(59, 130, 246, 0.6)" }}
-            />
+        <div className={isMobile ? 'space-y-8' : ''}>
+          {timelineEvents.map((event, index) => (
+            <div key={event.id} className={`relative ${isMobile ? '' : 'mb-32'}`}>
+              {/* Timeline Dot */}
+              <div
+                className={`absolute bg-gradient-to-r from-blue-500 to-purple-600 rounded-full shadow-lg border-2 border-gray-900 z-10 ${
+                  isMobile 
+                    ? 'left-6 top-6 w-4 h-4' 
+                    : 'left-1/2 transform -translate-x-1/2 w-6 h-6 border-4'
+                }`}
+                style={!isMobile ? { boxShadow: "0 0 20px rgba(59, 130, 246, 0.6)" } : {}}
+              />
 
-            {/* Date Badge */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 -top-8 z-30">
-              <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap">
-                {event.year}
-              </div>
-            </div>
+              {/* Date Badge */}
+              {!isMobile && (
+                <div className="absolute left-1/2 transform -translate-x-1/2 -top-8 z-30">
+                  <div className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap">
+                    {event.year}
+                  </div>
+                </div>
+              )}
 
-            {/* Event Card */}
-            <motion.div
-              initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true, margin: "-100px" }}
-              className={`w-5/12 relative z-20 ${
-                index % 2 === 0 ? "mr-auto pr-8" : "ml-auto pl-8"
-              }`}
-              style={{
-                marginLeft: index % 2 === 0 ? "0" : "auto",
-                marginRight: index % 2 === 0 ? "auto" : "0",
-                [index % 2 === 0 ? "paddingRight" : "paddingLeft"]: "3rem",
-              }}
-            >
-              <div className="glassmorphism p-8 rounded-2xl bg-gray-900/90 backdrop-blur-md">
-                {" "}
-                <h2 className="text-3xl md:text-4xl font-bold mb-2 gradient-text">
-                  {event.title}
-                </h2>
-                <div className="text-lg text-purple-300 mb-1 font-medium">
-                  {event.company}
-                </div>
-                <div className="text-md text-gray-400 mb-4 italic">
-                  {event.location}
-                </div>
-                <p className="text-gray-300 text-lg leading-relaxed mb-6 border-l-4 border-blue-500 pl-4 bg-blue-500/5 p-4 rounded-r-lg">
-                  {event.intro}
-                </p>
-                {/* Bullet Points */}
-                <div className="mb-6">
-                  <ul className="space-y-3">
-                    {event.bulletPoints.map((point, i) => (
-                      <li
+              {/* Event Card */}
+              <motion.div
+                initial={{ opacity: 0, x: isMobile ? 30 : (index % 2 === 0 ? -50 : 50) }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: isMobile ? 0.6 : 0.8, delay: isMobile ? index * 0.1 : 0 }}
+                viewport={{ once: true, margin: isMobile ? "-50px" : "-100px" }}
+                className={
+                  isMobile 
+                    ? "pl-16 pr-4"
+                    : `w-5/12 relative z-20 ${
+                        index % 2 === 0 ? "mr-auto pr-8" : "ml-auto pl-8"
+                      }`
+                }
+                style={!isMobile ? {
+                  marginLeft: index % 2 === 0 ? "0" : "auto",
+                  marginRight: index % 2 === 0 ? "auto" : "0",
+                  [index % 2 === 0 ? "paddingRight" : "paddingLeft"]: "3rem",
+                } : {}}
+              >
+                <div className={`bg-gray-900/90 backdrop-blur-md rounded-xl border border-gray-800/50 shadow-xl ${
+                  isMobile ? 'p-6' : 'glassmorphism p-8 rounded-2xl'
+                }`}>
+                  {/* Mobile Date Badge */}
+                  {isMobile && (
+                    <div className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1 rounded-full text-xs font-semibold mb-3">
+                      {event.year}
+                    </div>
+                  )}
+
+                  <h2 className={`font-bold mb-2 ${
+                    isMobile 
+                      ? 'text-xl bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent mb-1' 
+                      : 'text-3xl md:text-4xl gradient-text'
+                  }`}>
+                    {event.title}
+                  </h2>
+                  <div className={`font-medium ${
+                    isMobile ? 'text-purple-300 mb-1' : 'text-lg text-purple-300 mb-1'
+                  }`}>
+                    {event.company}
+                  </div>
+                  <div className={`text-gray-400 italic ${
+                    isMobile ? 'text-sm mb-4' : 'text-md mb-4'
+                  }`}>
+                    {event.location}
+                  </div>
+                  <p className={`text-gray-300 leading-relaxed mb-4 border-l-3 border-blue-500 pl-3 py-2 rounded-r ${
+                    isMobile ? 'text-sm bg-blue-500/5' : 'text-lg bg-blue-500/5 p-4 border-l-4'
+                  }`}>
+                    {event.intro}
+                  </p>
+
+                  {/* Bullet Points */}
+                  {isMobile ? (
+                    <details className="group mb-4">
+                      <summary className="cursor-pointer text-blue-400 text-sm font-medium mb-2 select-none flex items-center">
+                        <span>View Key Achievements</span>
+                        <svg
+                          className="w-4 h-4 ml-2 transform transition-transform group-open:rotate-180"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          viewBox="0 0 24 24"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </summary>
+                      
+                      <div className="space-y-2 mt-3">
+                        {event.bulletPoints.map((point, i) => (
+                          <div key={i} className="flex items-start text-sm text-gray-300 leading-relaxed">
+                            <span className="text-blue-400 mr-2 mt-1 flex-shrink-0 text-xs">●</span>
+                            <span>{point}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </details>
+                  ) : (
+                    <div className="mb-6">
+                      <ul className="space-y-3">
+                        {event.bulletPoints.map((point, i) => (
+                          <li
+                            key={i}
+                            className="text-gray-300 leading-relaxed flex items-start"
+                          >
+                            <span className="text-blue-400 mr-3 mt-1 flex-shrink-0">
+                              ●
+                            </span>
+                            <span className="text-sm md:text-base">{point}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {/* Technologies */}
+                  <div className={`flex flex-wrap ${isMobile ? 'gap-1.5' : 'gap-2'}`}>
+                    {event.technologies.map((tech, i) => (
+                      <span
                         key={i}
-                        className="text-gray-300 leading-relaxed flex items-start"
+                        className={`bg-blue-500/20 border border-blue-500/30 text-blue-300 ${
+                          isMobile 
+                            ? 'px-2 py-1 text-xs rounded-md' 
+                            : 'px-3 py-1 text-sm rounded-full'
+                        }`}
                       >
-                        <span className="text-blue-400 mr-3 mt-1 flex-shrink-0">
-                          ●
-                        </span>
-                        <span className="text-sm md:text-base">{point}</span>
-                      </li>
+                        {tech}
+                      </span>
                     ))}
-                  </ul>
+                  </div>
                 </div>
-                {/* Technologies */}
-                <div className="flex flex-wrap gap-2">
-                  {event.technologies.map((tech, i) => (
-                    <span
-                      key={i}
-                      className="px-3 py-1 text-sm bg-blue-500/20 border border-blue-500/30 rounded-full text-blue-300"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        ))}
+              </motion.div>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Progress Indicator */}
-      <div className="fixed bottom-8 right-8 z-50">
-        <div className="w-2 h-32 bg-white/10 rounded-full overflow-hidden">
+      <div className={`fixed z-50 ${isMobile ? 'bottom-4 right-4' : 'bottom-8 right-8'}`}>
+        <div className={`bg-white/10 rounded-full overflow-hidden ${
+          isMobile ? 'w-1 h-16' : 'w-2 h-32'
+        }`}>
           <motion.div
             className="w-full bg-gradient-to-t from-blue-500 to-purple-600 rounded-full"
             style={{ height: `${scrollProgress * 100}%` }}

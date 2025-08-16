@@ -240,3 +240,259 @@
     padding: 0 3rem;
   }
 }
+
+
+/* Add these styles to your existing Navigation.module.css file */
+
+/* Mobile Menu Button */
+.mobileMenuButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.mobileMenuButton:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Three Dots Menu */
+.menuDots {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 16px;
+}
+
+.dot {
+  width: 4px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  display: block;
+  transition: all 0.3s ease;
+}
+
+.mobileMenuButton:hover .dot {
+  background: rgba(255, 255, 255, 1);
+}
+
+/* Mobile Menu Dropdown */
+.mobileMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: none;
+  border-radius: 0 0 20px 20px;
+  overflow: hidden;
+  z-index: 1000;
+}
+
+.mobileMenuContent {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* Mobile Menu Items */
+.mobileMenuItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  text-align: left;
+  width: 100%;
+}
+
+.mobileMenuItem:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateX(5px);
+}
+
+.mobileMenuItem.active {
+  background: rgba(59, 130, 246, 0.1);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.mobileMenuItemContent {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.mobileMenuItemName {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.mobileMenuItemDesc {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.mobileMenuItem.active .mobileMenuItemName {
+  color: rgba(59, 130, 246, 1);
+}
+
+.mobileMenuItem.active .mobileMenuItemDesc {
+  color: rgba(59, 130, 246, 0.7);
+}
+
+/* Mobile Active Indicator */
+.mobileActiveIndicator {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  background: rgba(59, 130, 246, 1);
+  border-radius: 50%;
+}
+
+/* Mobile Resume Button */
+.mobileResumeButton {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 51, 234, 0.1));
+  border-color: rgba(59, 130, 246, 0.3);
+}
+
+.mobileResumeButton:hover {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(147, 51, 234, 0.15));
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
+.mobileResumeButton .mobileMenuItemName {
+  color: rgba(59, 130, 246, 0.9);
+}
+
+.mobileResumeButton .mobileMenuItemDesc {
+  color: rgba(59, 130, 246, 0.7);
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .container {
+    padding: 0;
+  }
+  
+  .spacer {
+    display: none;
+  }
+  
+  .navLinksContainer {
+    display: none;
+  }
+  
+  .spacerRightSmall {
+    display: none;
+  }
+  
+  .nav {
+    position: relative;
+    margin: 0;
+    width: 100%;
+  }
+  
+  .navContent {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+  }
+  
+  .navInner {
+    justify-content: space-between;
+    padding: 16px 20px;
+    margin: 0;
+    width: 100%;
+    max-width: none;
+    gap: 0;
+  }
+  
+  /* Ensure logo is properly sized on mobile */
+  .logo {
+    flex-shrink: 0;
+    margin: 0;
+  }
+  
+  .logoIcon {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .logoText {
+    font-size: 18px;
+  }
+  
+  .logoInfo {
+    display: flex;
+    flex-direction: column;
+    margin-left: 12px;
+  }
+  
+  .logoTitle {
+    font-size: 18px;
+    margin: 0;
+    line-height: 1.2;
+  }
+  
+  .logoSubtitle {
+    font-size: 12px;
+    margin: 0;
+    line-height: 1.2;
+  }
+  
+  /* Remove any default margins/padding that might cause spacing issues */
+  .mobileMenuButton {
+    margin: 0;
+    flex-shrink: 0;
+  }
+}
+
+/* Prevent body scroll when mobile menu is open */
+body.mobile-menu-open {
+  overflow: hidden;
+}
+
+/* Animation for menu dots when transforming */
+@keyframes dotPulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(0.9);
+  }
+}
+
+.mobileMenuButton:active .dot {
+  animation: dotPulse 0.3s ease-in-out;
+}
