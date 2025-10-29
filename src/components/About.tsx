@@ -103,7 +103,6 @@ const MobileAbout = () => {
 
       {/* Mobile Content Container */}
       <div className="relative z-20 px-4 py-6 space-y-6">
-        
         {/* Header Section - Profile + Name */}
         <motion.div
           initial={{ y: -30, opacity: 0 }}
@@ -145,7 +144,7 @@ const MobileAbout = () => {
           </div>
         </motion.div>
 
-         {/* About Me Section */}
+        {/* About Me Section */}
         <motion.div
           initial={{ y: 30, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -157,10 +156,20 @@ const MobileAbout = () => {
             </div>
             <div className="text-gray-100 leading-relaxed text-sm space-y-3">
               <p>
-                Hey! I'm in my final semester studying Computer Science at the University of Waterloo, graduating December 2025. I built this site to express who I am and what I'm working toward in this industry.
+                Hey! I'm in my final semester studying Computer Science at the
+                University of Waterloo, graduating December 2025. I built this
+                site to share what drives me: the ideas, systems, and code that
+                reflect how I think about technology and its place in the world.
               </p>
               <p>
-                I keep coming back to Max Weber because he saw what I experience daily: meaningful work isn't just about output, but about finding where your passion serves something larger. For me, that calling is software engineering.
+                I keep returning to Max Weber, who saw that work becomes
+                meaningful when it’s more than production, when it’s a calling.
+                Our <em>Beruf</em>, he wrote, lies where passion meets service
+                to something larger than ourselves. That’s what software
+                engineering is for me—a space where logic meets imagination, and
+                where each line of code can expand what people are capable of.
+                Every project I take on is a small act of building toward that
+                vision, a way to turn curiosity into something that lasts.
               </p>
             </div>
           </div>
@@ -176,10 +185,12 @@ const MobileAbout = () => {
             <div className="text-orange-400 font-bold mb-3 text-sm border-b border-orange-500/30 pb-2">
               /** Tech Stack **/
             </div>
-            
+
             <div className="space-y-3">
               <div className="bg-gray-700/40 border border-cyan-500/20 rounded-lg p-3">
-                <div className="text-cyan-400 font-semibold mb-2 text-xs">// Frontend & Mobile</div>
+                <div className="text-cyan-400 font-semibold mb-2 text-xs">
+                  // Frontend & Mobile
+                </div>
                 <div className="text-gray-100 text-xs space-y-1">
                   <div>Swift/SwiftUI • iOS Development</div>
                   <div>React • Next.js • TypeScript</div>
@@ -188,7 +199,9 @@ const MobileAbout = () => {
               </div>
 
               <div className="bg-gray-700/40 border border-green-500/20 rounded-lg p-3">
-                <div className="text-green-400 font-semibold mb-2 text-xs">// Backend & Infrastructure</div>
+                <div className="text-green-400 font-semibold mb-2 text-xs">
+                  // Backend & Infrastructure
+                </div>
                 <div className="text-gray-100 text-xs space-y-1">
                   <div>Node.js • NestJS • C# • ASP.NET</div>
                   <div>Laravel • PHP • Python</div>
@@ -197,7 +210,9 @@ const MobileAbout = () => {
               </div>
 
               <div className="bg-gray-700/40 border border-purple-500/20 rounded-lg p-3">
-                <div className="text-purple-400 font-semibold mb-2 text-xs">// Emerging Tech</div>
+                <div className="text-purple-400 font-semibold mb-2 text-xs">
+                  // Emerging Tech
+                </div>
                 <div className="text-gray-100 text-xs space-y-1">
                   <div>Solidity • Web3 • DeFi</div>
                   <div>Smart Contracts • Blockchain</div>
@@ -218,7 +233,7 @@ const MobileAbout = () => {
             <div className="text-cyan-400 font-bold mb-4 text-sm border-b border-cyan-500/30 pb-2 text-center">
               /** Connect With Me **/
             </div>
-            
+
             <div className="grid grid-cols-3 gap-3">
               {socialLinks.map((social, index) => (
                 <motion.a
@@ -233,10 +248,16 @@ const MobileAbout = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.6 + index * 0.1 }}
                 >
-                  <div className={`w-8 h-8 rounded-full ${social.color}/20 border border-current mb-2 flex items-center justify-center transition-all duration-300 group-hover:scale-110`}>
-                    <social.icon className={`text-lg ${social.color} ${social.hoverColor} transition-colors duration-300`} />
+                  <div
+                    className={`w-8 h-8 rounded-full ${social.color}/20 border border-current mb-2 flex items-center justify-center transition-all duration-300 group-hover:scale-110`}
+                  >
+                    <social.icon
+                      className={`text-lg ${social.color} ${social.hoverColor} transition-colors duration-300`}
+                    />
                   </div>
-                  <span className={`text-xs font-medium ${social.color} ${social.hoverColor} transition-colors duration-300 text-center`}>
+                  <span
+                    className={`text-xs font-medium ${social.color} ${social.hoverColor} transition-colors duration-300 text-center`}
+                  >
                     {social.name}
                   </span>
                   <span className="text-xs text-gray-500 font-mono mt-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center">
@@ -259,7 +280,9 @@ const MobileAbout = () => {
               <div className="w-2.5 h-2.5 bg-red-500 rounded-full"></div>
               <div className="w-2.5 h-2.5 bg-yellow-500 rounded-full"></div>
               <div className="w-2.5 h-2.5 bg-green-500 rounded-full"></div>
-              <span className="text-gray-400 text-xs ml-3 font-medium">anshul:~</span>
+              <span className="text-gray-400 text-xs ml-3 font-medium">
+                anshul:~
+              </span>
             </div>
 
             <div className="text-green-400 font-mono text-sm">
@@ -278,10 +301,6 @@ const MobileAbout = () => {
             </div>
           </div>
         </motion.div>
-
-        
-
-       
 
         {/* Bottom Padding */}
         <div className="h-8"></div>
@@ -698,7 +717,6 @@ const DesktopAbout = () => {
                     </div>
                   </div>
                 </motion.div>
-
               </motion.div>
             </div>
 
@@ -718,15 +736,30 @@ const DesktopAbout = () => {
                     className="text-gray-100 leading-relaxed mb-6 text-lg font-semibold"
                     style={{ textShadow: "0 1px 2px rgba(0, 0, 0, 0.8)" }}
                   >
-                    Hey! I'm in my final semester studying Computer Science at the University of Waterloo, graduating December 2025. I built this site to express who I am and what I'm working toward in this industry—with detailed information about the real value I've already put out into the world.
+                    Hey! I'm in my final semester studying Computer Science at
+                    the University of Waterloo, graduating December 2025. I
+                    built this site to express who I am and what I'm working
+                    toward in this industry—with detailed information about the
+                    real value I've already put out into the world.
                   </p>
 
                   <p
                     className="text-gray-100 leading-relaxed text-lg font-semibold"
                     style={{ textShadow: "0 1px 2px rgba(0, 0, 0, 0.8)" }}
                   >
-                    I keep coming back to Max Weber because he saw what I experience daily: meaningful work isn't just about output, but about finding where your passion serves something larger. He wrote that our calling—our Beruf—emerges where our deepest passions align with service to something greater. For me, that calling is software engineering.
-In code, I find what excites me most: the power to build systems that expand human capability. Every project I work on is both an expression of what fascinates me about technology and a contribution to solving real problems in the world.
+                    I’m in my final semester of Computer Science at the
+                    University of Waterloo, graduating December 2025. I built
+                    this site to share what drives me: the ideas, systems, and
+                    code that reflect how I think about technology and its place
+                    in the world. I keep returning to Max Weber, who saw that
+                    work becomes meaningful when it’s more than production, when
+                    it’s a calling. Our <em>Beruf</em>, he wrote, lies where
+                    passion meets service to something larger than ourselves.
+                    That’s what software engineering is for me—a space where
+                    logic meets imagination, and where each line of code can
+                    expand what people are capable of. Every project I take on
+                    is a small act of building toward that vision, a way to turn
+                    curiosity into something that lasts.
                   </p>
                 </div>
               </div>
@@ -848,8 +881,8 @@ export default function About() {
     };
 
     checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-    return () => window.removeEventListener('resize', checkScreenSize);
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
   return isMobile ? <MobileAbout /> : <DesktopAbout />;
