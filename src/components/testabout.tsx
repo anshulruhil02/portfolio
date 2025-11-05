@@ -501,22 +501,6 @@ const MobileSocialGrid = () => (
                   >
                     /** About Me **/
                   </div>
-
-                  {/* Enhanced text with better contrast and spacing */}
-                  <p
-                    className="text-gray-100 leading-relaxed mb-6 text-lg font-semibold"
-                    style={{ textShadow: "0 1px 2px rgba(0, 0, 0, 0.8)" }}
-                  >
-                    Hey! I'm in my final semester studying Computer Science at the University of Waterloo, graduating December 2025. I built this site to express who I am and what I'm working toward in this industry—with detailed information about the real value I've already put out into the world.
-                  </p>
-
-                  <p
-                    className="text-gray-100 leading-relaxed text-lg font-semibold"
-                    style={{ textShadow: "0 1px 2px rgba(0, 0, 0, 0.8)" }}
-                  >
-                    I keep coming back to Max Weber because he saw what I experience daily: meaningful work isn't just about output, but about finding where your passion serves something larger. He wrote that our calling—our Beruf—emerges where our deepest passions align with service to something greater. For me, that calling is software engineering.
-In code, I find what excites me most: the power to build systems that expand human capability. Every project I work on is both an expression of what fascinates me about technology and a contribution to solving real problems in the world.
-                  </p>
                 </div>
               </div>
 

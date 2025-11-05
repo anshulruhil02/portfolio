@@ -144,36 +144,7 @@ const MobileAbout = () => {
           </div>
         </motion.div>
 
-        {/* About Me Section */}
-        <motion.div
-          initial={{ y: 30, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-        >
-          <div className="bg-gray-800/85 border border-cyan-500/30 rounded-lg p-4 backdrop-blur-md shadow-2xl">
-            <div className="text-cyan-400 font-bold mb-3 text-sm border-b border-cyan-500/30 pb-2">
-              /** About Me **/
-            </div>
-            <div className="text-gray-100 leading-relaxed text-sm space-y-3">
-              <p>
-                Hey! I'm in my final semester studying Computer Science at the
-                University of Waterloo, graduating December 2025. I built this
-                site to share what drives me: the ideas, systems, and code that
-                reflect how I think about technology and its place in the world.
-              </p>
-              <p>
-                I keep returning to Max Weber, who saw that work becomes
-                meaningful when it’s more than production, when it’s a calling.
-                Our <em>Beruf</em>, he wrote, lies where passion meets service
-                to something larger than ourselves. That’s what software
-                engineering is for me—a space where logic meets imagination, and
-                where each line of code can expand what people are capable of.
-                Every project I take on is a small act of building toward that
-                vision, a way to turn curiosity into something that lasts.
-              </p>
-            </div>
-          </div>
-        </motion.div>
+       
 
         {/* Tech Stack Section */}
         <motion.div
@@ -731,17 +702,6 @@ const DesktopAbout = () => {
                   >
                     /** About Me **/
                   </div>
-
-                  <p
-                    className="text-gray-100 leading-relaxed mb-6 text-lg font-semibold"
-                    style={{ textShadow: "0 1px 2px rgba(0, 0, 0, 0.8)" }}
-                  >
-                    Hey! I'm in my final semester studying Computer Science at
-                    the University of Waterloo, graduating December 2025. I
-                    built this site to express who I am and what I'm working
-                    toward in this industry—with detailed information about the
-                    real value I've already put out into the world.
-                  </p>
 
                   <p
                     className="text-gray-100 leading-relaxed text-lg font-semibold"
